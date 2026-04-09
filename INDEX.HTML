@@ -1,0 +1,2135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CHIMELADA – El CAPRICHO DEL SABOR</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400;1,9..144,700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --fire:#C1380A;--ember:#E86A20;--amber:#F5A623;--gold:#F5C518;
+  --dark:#100500;--char:#1E0B00;--brown:#3D1A00;
+  --cream:#FFF8EF;--parch:#F5E8D0;
+  --green:#1D5C1D;--teal:#0F6E56;
+  --white:#FFFFFF;--muted:#7A5C40;
+  --r:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--cream);overflow-x:hidden}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--dark)}
+::-webkit-scrollbar-thumb{background:var(--fire);border-radius:3px}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+button{font-family:inherit;cursor:pointer;border:none}
+img{display:block;max-width:100%}
+
+/* ═══ CURSOR ═══ */
+.cursor{position:fixed;width:12px;height:12px;border-radius:50%;background:var(--fire);pointer-events:none;z-index:9999;transition:transform .15s,background .2s;mix-blend-mode:difference}
+.cursor-ring{position:fixed;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--amber);pointer-events:none;z-index:9998;transition:all .1s;opacity:.6}
+
+/* ═══ NAV ═══ */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 72px;
+}
+#nav a {
+  text-decoration: none;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px; /* Esto separa las letras para un look gourmet */
+    padding: 0 15px;      /* Esto es lo que evita que las palabras choquen */
+    transition: color 0.3s ease;
+}
+#nav a:hover {
+  color: #e65100; /* El color naranja de Chimelada cuando pasas el mouse */
+}
+#nav.solid{background:rgba(16,5,0,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(245,197,24,.1)}
+
+/* === CARRITO BTN === */
+.nav-cart {
+  background: #c0392b;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+.nav-cart:hover {
+  background: #e74c3c;
+}
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #f1a41a; /* El naranja/amarillo de tu foto */
+  color: black;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.logo-hero {
+   display: block;
+   margin: 60px auto 20px auto;
+   max-width: 420px; /* Tamaño elegante */
+   height: auto;
+   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+}
+.logo .dot{width:8px;height:8px;background:var(--fire);border-radius:50%;display:inline-block;animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.6}}
+.nav-links{display:flex;gap:.5rem}
+.nav-links a{
+  color:rgba(255,255,255,.65);font-size:.78rem;font-weight:500;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:.45rem .9rem;border-radius:50px;
+  transition:color .2s,background .2s;
+}
+.nav-links a:hover{color:var(--gold);background:rgba(245,197,24,.08)}
+.nav-actions{display:flex;align-items:center;gap:1rem}
+.btn-login{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.5rem 1.2rem;border-radius:50px;
+  border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.8);font-size:.8rem;font-weight:500;
+  transition:all .25s;cursor:pointer;background:transparent;
+}
+.btn-login:hover{border-color:var(--gold);color:var(--gold)}
+.cart-btn{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--fire);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;position:relative;
+  transition:transform .2s,background .2s;cursor:pointer;
+}
+.cart-btn:hover{transform:scale(1.1);background:var(--ember)}
+.cart-n{
+  position:absolute;top:-3px;right:-3px;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--gold);color:var(--dark);
+  font-size:.6rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+}
+.ham-btn{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.5rem}
+.ham-btn span{width:24px;height:2px;background:#fff;border-radius:2px;transition:.3s}
+
+/* ═══ MODAL ═══ */
+.overlay{
+  display:none;position:fixed;inset:0;z-index:800;
+  background:rgba(0,0,0,.85);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;
+}
+.overlay.open{display:flex}
+.modal{
+  background:var(--char);border:1px solid rgba(245,197,24,.15);
+  border-radius:24px;width:min(420px,90vw);
+  padding:2.5rem;position:relative;
+  animation:popUp .3s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes popUp{from{opacity:0;transform:translateY(30px) scale(.95)}to{opacity:1;transform:none}}
+.modal-close{
+  position:absolute;top:1.2rem;right:1.2rem;
+  background:rgba(255,255,255,.08);border:none;
+  color:#fff;width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;cursor:pointer;transition:background .2s;
+}
+.modal-close:hover{background:rgba(255,255,255,.15)}
+.modal h2{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:2px;color:var(--gold);margin-bottom:.3rem}
+.modal p{color:rgba(255,255,255,.5);font-size:.88rem;margin-bottom:1.8rem}
+.m-tabs{display:flex;background:rgba(255,255,255,.06);border-radius:10px;padding:3px;margin-bottom:1.5rem}
+.m-tab{flex:1;text-align:center;padding:.5rem;border-radius:8px;font-size:.82rem;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;transition:.2s}
+.m-tab.on{background:var(--fire);color:#fff}
+.f-g{margin-bottom:1rem}
+.f-g label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.4);margin-bottom:.4rem}
+.f-g input,.f-g select,.f-g textarea{
+  width:100%;padding:.75rem 1rem;border-radius:10px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  color:#fff;font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;
+  transition:border-color .2s;
+}
+.f-g input:focus,.f-g select:focus,.f-g textarea:focus{border-color:var(--amber)}
+.f-g select option{background:var(--char)}
+.btn-primary{
+  width:100%;padding:.9rem;border-radius:10px;
+  background:linear-gradient(135deg,var(--fire),var(--amber));
+  color:#fff;font-weight:700;font-size:1rem;
+  transition:opacity .2s,transform .15s;
+}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+
+/* ═══ HERO ═══ */
+#hero{
+  position: relative;
+    min-height: 90vh; /* Ajustado para que no sea eterno */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+.hero-bg video {
+  position:absolute;
+  inset:0;
+  z-index:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.hero-grain{
+  position:absolute;inset:0;z-index:1;opacity:.08;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px;
+}
+.hero-vignette {
+    display: none !important;
+    background: none !important;
+    visibility: hidden !important;
+}
+.hero-bar{
+  position:absolute;top:0;left:0;right:0;z-index:3;height:4px;
+  background:linear-gradient(90deg,var(--fire),var(--amber),var(--gold),var(--amber),var(--fire));
+  background-size:200%;
+  animation:shimmer 3s linear infinite;
+}
+@keyframes shimmer{to{background-position:200%}}
+
+.hero-content{position:relative;z-index:4;text-align:center;padding:80px 2rem 0;max-width:1000px}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:.8rem;
+  font-size:.7rem;font-weight:700;letter-spacing:5px;text-transform:uppercase;
+  color:rgba(255,255,255,.5);margin-bottom:2rem;margin-top:20px;
+  animation:slideDown .8s .1s both;
+}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:30px;height:1px;background:rgba(255,255,255,.2)}
+@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:none}}
+
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(5rem,16vw,14rem);
+  letter-spacing:4px;line-height:.9;
+  background:linear-gradient(160deg,#f70202 0%,var(--gold) 40%,var(--amber) 70%,var(--fire) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:slideUp .9s .25s both;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+
+.hero-sub{
+  font-family:'Fraunces',serif;font-style:italic;
+  font-size:clamp(1rem,2.5vw,1.8rem);color:rgba(255,255,255,.7);
+  letter-spacing:.1em;margin-top:.5rem;
+  animation:slideUp .9s .4s both;
+}
+.hero-tagline{
+  display:inline-block;
+  margin-top:2rem;
+  font-size:.75rem;font-weight:700;letter-spacing:5px;text-transform:uppercase;
+  color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.12);
+  padding:.6rem 1.5rem;border-radius:50px;
+  animation:slideUp .9s .55s both;
+}
+.hero-ctas{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:3rem;animation:slideUp .9s .7s both}
+.cta-fire{
+  padding:1rem 2.5rem;border-radius:50px;
+  background:linear-gradient(135deg,var(--fire),var(--ember));
+  color:#fff;font-weight:700;font-size:.95rem;letter-spacing:.5px;
+  box-shadow:0 0 40px rgba(193,56,10,.5);
+  transition:transform .2s,box-shadow .2s;display:inline-block;
+}
+.cta-fire:hover{transform:translateY(-4px);box-shadow:0 0 60px rgba(193,56,10,.7)}
+.cta-outline{
+  padding:1rem 2.5rem;border-radius:50px;
+  border:1px solid rgba(255,255,255,.25);color:#fff;
+  font-weight:500;font-size:.95rem;
+  transition:border-color .2s,background .2s;display:inline-block;
+}
+.cta-outline:hover{border-color:var(--gold);background:rgba(245,197,24,.08)}
+
+.hero-scroll{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  z-index:4;display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  color:rgba(255,255,255,.3);font-size:.65rem;letter-spacing:4px;text-transform:uppercase;
+  animation:bob 2.5s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,.3),transparent)}
+
+/* ═══ MARQUEE ═══ */
+.marquee-wrap{
+  background-color: #2b7af1; /* Aquí cambias el color de fondo */
+    padding: 10px 0;
+    overflow: hidden;
+    border-top: 2px solid #1cf508; /* Opcional: una línea arriba */
+    border-bottom: 2px solid #1cf508; /* Opcional: una línea abajo */
+}
+.marquee-track{
+  display:flex;gap:3rem;white-space:nowrap;
+  animation:marquee 20s linear infinite;
+}
+@keyframes marquee{to{transform:translateX(-50%)}}
+.marquee-item{
+  font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:3px;color:#350af7;
+  display:flex;align-items:center;gap:1.5rem;
+}
+.marquee-sep{width:6px;height:6px;border-radius:50%;background:rgba(3, 165, 38, 0.5)}
+
+/* ═══ ABOUT ═══ */
+#acerca {
+  border: 3px solid red;
+  padding: 10rem 5vw;
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://i.pinimg.com/736x/f3/71/d5/f371d5d54f36e24b7646e1ae60a56bd5.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.about-grid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center}
+.about-visual{position:relative}
+.about-frame{
+  width:100%;aspect-ratio:3/4;border-radius:24px;overflow:hidden;
+  position:relative;
+}
+.about-frame img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.about-frame:hover img{transform:scale(1.04)}
+.about-frame-border{
+  position:absolute;inset:0;border-radius:24px;
+  border:1px solid rgba(245,197,24,.2);pointer-events:none;
+}
+.about-accent{
+  position:absolute;bottom:-2.5rem;right:-2.5rem;
+  background:var(--char);border:1px solid rgba(245,197,24,.15);
+  border-radius:20px;padding:1.5rem 2rem;
+  box-shadow:0 20px 50px rgba(0,0,0,.4);
+}
+.about-accent .big{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:var(--gold);line-height:1}
+.about-accent .sm{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:.2rem}
+.about-badge{
+  position:absolute;top:2rem;left:-1.5rem;
+  background:var(--fire);color:#fff;
+  font-size:.7rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;
+  padding:.5rem 1.1rem;border-radius:50px;
+  box-shadow:0 8px 24px rgba(193,56,10,.4);
+}
+.tag{font-size:.7rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--fire);margin-bottom:1rem;display:block}
+.h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5vw,5rem);letter-spacing:2px;line-height:.95}
+.h2 em{font-style:italic;color:var(--gold)}
+.body-text{color:rgba(255,255,255,.55);line-height:1.9;font-size:.97rem;margin-top:1.2rem}
+.values{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2.5rem}
+.val{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;padding:1.2rem;
+  transition:background .3s,border-color .3s,transform .3s;
+}
+.val:hover{background:rgba(245,166,35,.08);border-color:rgba(245,166,35,.25);transform:translateY(-3px)}
+.val-i{font-size:1.5rem;margin-bottom:.6rem}
+.val h4{color:#fff;font-size:.9rem;font-weight:700;margin-bottom:.3rem}
+.val p{color:rgba(255,255,255,.4);font-size:.8rem;line-height:1.5}
+
+/* ═══ PRODUCTS ═══ */
+#productos {
+  border: 3px solid red;
+  padding: 10rem 5vw;
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://static.wixstatic.com/media/9b814e_fe8285b4def24952852c841f025460bd~mv2_d_5184_3456_s_4_2.jpg/v1/fill/w_320,h_213,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/9b814e_fe8285b4def24952852c841f025460bd~mv2_d_5184_3456_s_4_2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.section-head{text-align:center;margin-bottom:5rem}
+.filter-bar{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:4rem}
+.f-btn{
+  padding:.5rem 1.4rem;border-radius:50px;
+  border:1px solid rgba(255,255,255,.12);
+  background:transparent;color:rgba(255,255,255,.5);
+  font-size:.8rem;font-weight:600;letter-spacing:.5px;
+  transition:all .25s;cursor:pointer;
+}
+.f-btn.on,.f-btn:hover{background:var(--fire);border-color:var(--fire);color:#fff}
+.prod-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1.5rem;max-width:1300px;margin:0 auto;
+}
+.card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:22px;overflow:hidden;
+  transition:transform .35s,border-color .35s,box-shadow .35s;
+  position:relative;cursor:pointer;
+}
+.card:hover{transform:translateY(-12px);border-color:rgba(245,166,35,.3);box-shadow:0 30px 60px rgba(0,0,0,.4)}
+.card-img{
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.card-emoji{font-size:5rem;position:relative;z-index:1;filter:drop-shadow(0 6px 20px rgba(0,0,0,.4));transition:transform .3s}
+.card:hover .card-emoji{transform:scale(1.15) rotate(-5deg)}
+.card-ribbon{
+  position:absolute;top:1rem;left:0;z-index:2;
+  background:var(--fire);color:#fff;
+  font-size:.65rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;
+  padding:.3rem 1rem .3rem .7rem;
+  clip-path:polygon(0 0,100% 0,90% 100%,0 100%);
+}
+.card-body{padding:1.5rem}
+.card-body h3{font-family:'Fraunces',serif;font-size:1.5rem;color:#fff;margin-bottom:.4rem}
+.spice{display:flex;gap:.2rem;margin:.4rem 0 .8rem}
+.sp{font-size:.85rem;transition:transform .2s}
+.card:hover .sp{transform:scale(1.2)}
+.card-desc{color:rgba(255,255,255,.45);font-size:.85rem;line-height:1.6;margin-bottom:1.2rem}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.price{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:1px;color:var(--amber)}
+.price small{font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:400;color:rgba(255,255,255,.3)}
+.add{
+  padding: 0.7rem 1.4rem;
+  border-radius: 8px;
+  background: #c0392b;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.2s;
+  border: none;
+  cursor: pointer;
+}
+.add:hover{
+  background: #e74c3c;
+  transform: translateY(-2px);
+}
+
+/* ═══ PARALLAX DIVIDER ═══ */
+.parallax-section{
+  position:relative;height:70vh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+#parBg {
+  background-image: url('https://pbs.twimg.com/media/Fo7dU9eXwAIo2m3.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* --- LO QUE TE FALTA --- */
+  position: absolute;  /* Para que flote detrás del texto */
+  top: 0;
+  left: 0;
+  width: 100%;         /* Que ocupe todo el ancho */
+  height: 100%;        /* Que ocupe todo el alto del contenedor padre */
+  z-index: -1;         /* Para que el texto quede POR ENCIMA de la imagen */
+}
+#par {
+  position: relative; /* Obligatorio para que #parBg sepa dónde alinearse */
+  height: 500px;      /* Dale una altura fija (ejemplo: 500px) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;   /* Para que nada se salga del cuadro */
+}
+.parallax-overlay{
+  position:absolute;inset:0;
+  background:rgba(16,5,0,.72);
+}
+.parallax-content{position:relative;z-index:2;text-align:center;padding:0 2rem}
+.parallax-content .big-quote{
+  font-family:'Fraunces',serif;font-style:italic;
+  font-size:clamp(2rem,5vw,4rem);color:#fff;
+  max-width:800px;line-height:1.3;
+}
+.parallax-content .big-quote em{color:var(--gold)}
+
+/* ═══ STATS ═══ */
+.stats-band{padding:6rem 5vw;background:linear-gradient(135deg,var(--fire),var(--ember),var(--amber))}
+.stats-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center}
+.s-num{font-family:'Bebas Neue',sans-serif;font-size:4rem;letter-spacing:2px;color:#fff}
+.s-lab{font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.75);margin-top:.3rem}
+
+/* ═══ PEDIDOS ═══ */
+#pedidos {
+  border: 3px solid red;
+  padding: 10rem 5vw;
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://static.wixstatic.com/media/9b814e_3aa6a1dd402d4f6eb2ec9eef27d2aaed~mv2_d_3456_5184_s_4_2.jpg/v1/fill/w_250,h_375,al_c,q_90,enc_auto/9b814e_3aa6a1dd402d4f6eb2ec9eef27d2aaed~mv2_d_3456_5184_s_4_2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.pedidos-wrap{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
+.ped-steps{margin-top:3rem;display:flex;flex-direction:column;gap:1.2rem}
+.step{display:flex;gap:1.2rem;align-items:flex-start;padding:1.2rem;border-radius:16px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);transition:.3s}
+.step:hover{background:rgba(245,166,35,.07);border-color:rgba(245,166,35,.2)}
+.s-num-c{
+  min-width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--fire),var(--amber));
+  color:#fff;font-weight:900;font-size:.9rem;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.step h4{color:#fff;font-size:.95rem;margin-bottom:.2rem}
+.step p{color:rgba(255,255,255,.45);font-size:.83rem;line-height:1.5}
+.ped-form{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;padding:2.5rem;
+}
+.ped-form h3{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--gold);margin-bottom:2rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+/* ═══ RECETARIO ═══ */
+#recetario {
+  border: 3px solid red;
+  padding: 10rem 5vw;
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("https://www.shutterstock.com/image-photo/frame-made-recipe-book-cookies-260nw-2693613691.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.recetas-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:2rem;max-width:1300px;margin:0 auto;
+}
+.receta{border-radius:22px;overflow:hidden;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);transition:transform .3s,border-color .3s}
+.receta:hover{transform:translateY(-8px);border-color:rgba(245,166,35,.25)}
+.receta-img{
+  height:210px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--brown),var(--fire));
+}
+.receta-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.receta:hover .receta-img img{transform:scale(1.08)}
+.receta-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(16,5,0,.8) 0%,transparent 60%)}
+.receta-chip{
+  position:absolute;top:1rem;left:1rem;z-index:1;
+  background:rgba(0,0,0,.5);color:#fff;backdrop-filter:blur(6px);
+  font-size:.68rem;font-weight:700;padding:.3rem .75rem;border-radius:50px;
+  border:1px solid rgba(255,255,255,.15);
+}
+.receta-time{
+  position:absolute;top:1rem;right:1rem;z-index:1;
+  background:var(--fire);color:#fff;
+  font-size:.65rem;font-weight:900;padding:.3rem .75rem;border-radius:50px;
+}
+.receta-body{padding:1.5rem}
+.receta-cat{font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:.5rem}
+.receta-body h3{font-family:'Fraunces',serif;font-size:1.4rem;color:#fff;margin-bottom:.5rem}
+.receta-body p{color:rgba(255,255,255,.45);font-size:.85rem;line-height:1.6;margin-bottom:1.1rem}
+.receta-btn{color:var(--amber);font-size:.85rem;font-weight:700;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:.4rem;transition:gap .2s,color .2s}
+.receta-btn:hover{gap:.8rem;color:var(--fire)}
+
+/* TESTIMONIOS */
+#testimonios {
+  border: 3px solid red;
+  padding: 10rem 5vw;
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.testi-overflow{overflow:hidden;margin-top:3.5rem;position:relative}
+.testi-overflow::before,.testi-overflow::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}
+.testi-overflow::before{left:0;background:linear-gradient(to right,var(--carbon),transparent)}
+.testi-overflow::after{right:0;background:linear-gradient(to left,var(--carbon),transparent)}
+.testi-track{
+  display: flex;
+  gap: 2rem;
+  width: max-content; /* 🔥 IMPORTANTE */
+  animation: slideCards 25s linear infinite;
+}
+.testi-card{
+  min-width: 280px;
+}
+.testi-card::before{content:'"';font-family:'Cormorant Garamond',serif;font-size:8rem;color:var(--fuego);opacity:.15;position:absolute;top:-1.5rem;left:1rem;line-height:1;pointer-events:none}
+.testi-card:hover{border-color:rgba(232,74,12,.3)}
+.stars{color:var(--fuego);font-size:.9rem;margin-bottom:1rem;letter-spacing:2px}
+.testi-text{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:rgba(253,243,227,.8);line-height:1.7;margin-bottom:1.4rem}
+.testi-author{display:flex;align-items:center;gap:.8rem}
+.testi-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--fuego),var(--oro));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;color:var(--blanco);flex-shrink:0}
+.testi-info strong{display:block;font-size:.88rem;color:var(--blanco)}
+.testi-info span{font-size:.75rem;color:rgba(253,243,227,.4)}
+.testi-overflow:hover .testi-track{
+  animation-play-state: paused;
+}
+@keyframes slideCards {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+/* ═══ CONTACTO ═══ */
+#contacto {
+  border: 3px solid red;
+  padding: 10rem 5vw;
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://static.wixstatic.com/media/9b814e_9278a817a05346bc9fc982a92a495689~mv2.png/v1/fill/w_1080,h_1080,al_c/9b814e_9278a817a05346bc9fc982a92a495689~mv2.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.contacto-wrap{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:6rem;align-items:start}
+.c-info .body-text{margin-top:1.5rem}
+.c-data{margin-top:2.5rem;display:flex;flex-direction:column;gap:1rem}
+.c-row{display:flex;align-items:center;gap:1rem;color:rgba(255,255,255,.6);font-size:.9rem}
+.c-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;
+}
+.socials{display:flex;gap:.75rem;margin-top:2rem}
+.soc{
+  width:44px;height:44px;border-radius:12px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:1rem;transition:background .2s,transform .2s,border-color .2s;
+}
+.soc:hover{background:var(--fire);border-color:var(--fire);transform:translateY(-3px)}
+.c-form{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;padding:2.5rem;
+}
+.c-form h3{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--gold);margin-bottom:2rem}
+
+/* ═══ PUNTOS ═══ */
+#puntos {
+  border: 3px solid red;
+  padding: 10rem 5vw;
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-ToUboQKHvGfuliQtek8ceNOJelpvWJDupw&s');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.map-box{
+  max-width:1100px;margin:0 auto 3.5rem;
+  border-radius:24px;height:380px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  background:linear-gradient(135deg,#1a0a00,#2d1400);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.map-pin{font-size:2rem;position:absolute;animation:mapFloat 3s ease-in-out infinite}
+.map-pin:nth-child(1){top:30%;left:25%;animation-delay:0s}
+.map-pin:nth-child(2){top:50%;left:55%;animation-delay:.5s}
+.map-pin:nth-child(3){top:25%;left:65%;animation-delay:1s}
+.map-pin:nth-child(4){top:60%;left:35%;animation-delay:1.5s}
+@keyframes mapFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.map-label{font-size:.8rem;color:rgba(255,255,255,.3);letter-spacing:3px;text-transform:uppercase}
+.puntos-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:1.2rem;max-width:1100px;margin:0 auto;
+}
+.punto{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-left:3px solid var(--amber);border-radius:16px;padding:1.5rem;
+  transition:transform .3s,border-left-color .3s;
+}
+.punto:hover{transform:translateY(-5px);border-left-color:var(--fire)}
+.punto-i{font-size:1.8rem;margin-bottom:.7rem}
+.punto h4{font-family:'Fraunces',serif;color:#fff;font-size:1.1rem;margin-bottom:.3rem}
+.punto p{color:rgba(255,255,255,.4);font-size:.82rem;line-height:1.5}
+.punto .hours{margin-top:.6rem;font-size:.72rem;font-weight:700;color:var(--teal);letter-spacing:.5px}
+
+/* ═══ FINAL CTA ═══ */
+.final-cta {
+  border: 3px solid red;
+  position: relative;
+  padding: 12rem 5vw;
+  overflow: hidden;
+  text-align: center;
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQvRB_s1VVISzlfAjpijlekFV39SCZBqBmqw&s');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.cta-bg-img{
+  position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1569945715901-c98f5a42abb3?w=1600&q=80') center/cover;
+  opacity:.12;
+}
+.cta-overlay{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 0%,var(--dark) 75%)}
+.cta-inner{position:relative;z-index:1}
+.cta-pre{font-size:.7rem;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--fire);margin-bottom:1.5rem}
+.cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,10vw,9rem);letter-spacing:3px;line-height:.95}
+.cta-title em{
+  font-style:italic;
+  background:linear-gradient(135deg,var(--amber),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.cta-sub{color:rgba(255,255,255,.5);font-size:1.05rem;max-width:520px;margin:1.5rem auto 3rem;line-height:1.8}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* ═══ FOOTER ═══ */
+footer {
+  border: 3px solid red;
+  padding: 5rem 5vw 2.5rem;
+  border-top: 1px solid rgba(255,255,255,.05);
+  background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmafQv4t3Omwr7mb3urvH1qz6aucewKXCWHw&s');
+  background-size: cover;
+  background-position: center;
+}
+.foot-grid{max-width:1200px;margin:0 auto 4rem;display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:4rem}
+.foot-brand .logo{font-size:2rem;margin-bottom:1rem}
+.foot-brand p{color:rgba(255,255,255,.35);font-size:.88rem;line-height:1.8}
+.foot-col h5{color:rgba(255,255,255,.9);font-size:.72rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:1.5rem}
+.foot-col ul{display:flex;flex-direction:column;gap:.7rem}
+.foot-col ul a{color:rgba(255,255,255,.35);font-size:.88rem;transition:color .2s}
+.foot-col ul a:hover{color:var(--gold)}
+.foot-bottom{
+  max-width:1200px;margin:0 auto;
+  border-top:1px solid rgba(255,255,255,.05);padding-top:1.5rem;
+  display:flex;justify-content:space-between;align-items:center;
+  color:rgba(255,255,255,.2);font-size:.78rem;
+}
+
+/* CARRITO DRAWER */
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.cart-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  bottom: 0;
+  width: 420px;
+  background: #150700;
+  border-left: 1px solid rgba(255,253,247,0.08);
+  z-index: 201;
+  padding: 2rem;
+  transition: right 0.4s cubic-bezier(0.4,0,0.2,1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.cart-drawer.open {
+  right: 0;
+}
+.cart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.cart-head h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  color: var(--cream);
+}
+.cart-close {
+  background: none;
+  border: none;
+  color: var(--cream);
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+.cart-items {
+  flex: 1;
+}
+.cart-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255,253,247,0.07);
+}
+.ci-img {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+.ci-info {
+  flex: 1;
+}
+.ci-name {
+  font-size: 0.9rem;
+  color: var(--cream);
+  font-weight: 500;
+}
+.ci-price {
+  font-size: 0.85rem;
+  color: var(--amber);
+  margin-top: 0.25rem;
+}
+.ci-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.ci-btn {
+  background: rgba(255,253,247,0.08);
+  border: none;
+  color: var(--cream);
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  border-radius: 4px;
+}
+.ci-btn:hover {
+  background: var(--fire);
+}
+.ci-qty {
+  font-size: 0.85rem;
+  color: var(--cream);
+  min-width: 20px;
+  text-align: center;
+}
+.ci-remove {
+  background: none;
+  border: none;
+  color: rgba(250,243,224,0.3);
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: auto;
+}
+.ci-remove:hover {
+  color: var(--fire);
+}
+.cart-total {
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,253,247,0.1);
+}
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.total-row span {
+  font-size: 0.88rem;
+  color: rgba(250,243,224,0.6);
+}
+.total-row strong {
+  color: var(--cream);
+}
+.total-final {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0 1.5rem;
+}
+.total-final span {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  color: var(--cream);
+}
+.total-final strong {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  color: var(--white);
+}
+.btn-checkout {
+  width: 100%;
+  background: var(--fire);
+  color: var(--white);
+  border: none;
+  padding: 1.1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-radius: 8px;
+}
+.btn-checkout:hover {
+  background: #e74c3c;
+}
+.empty-cart {
+  text-align: center;
+  padding: 4rem 0;
+  color: rgba(250,243,224,0.4);
+}
+.empty-cart span {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* ═══ TOAST ═══ */
+.toast{
+  position:fixed;bottom:2rem;right:2rem;z-index:999;
+  background:linear-gradient(135deg,var(--green),#2d8a2d);color:#fff;
+  padding:1rem 1.8rem;border-radius:14px;font-weight:700;
+  transform:translateY(100px);opacity:0;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 10px 40px rgba(0,0,0,.4);
+}
+.toast.show{transform:none;opacity:1}
+
+/* ═══ MOBILE NAV ═══ */
+.mob-nav{
+  display:none;position:fixed;
+  top:72px;left:0;right:0;
+  background:rgba(16,5,0,.98);backdrop-filter:blur(16px);
+  padding:2rem;flex-direction:column;gap:1rem;z-index:499;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.mob-nav.open{display:flex}
+.mob-nav a{
+  color:rgba(255,255,255,.7);font-size:1rem;font-weight:500;
+  padding:.9rem 0;border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.mob-nav a::after{content:'→';color:rgba(255,255,255,.2)}
+
+/* ═══ SCROLL REVEAL ═══ */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s,transform .8s}
+.reveal.visible{opacity:1;transform:none}
+.reveal-l{opacity:0;transform:translateX(-40px);transition:opacity .8s,transform .8s}
+.reveal-l.visible{opacity:1;transform:none}
+.reveal-r{opacity:0;transform:translateX(40px);transition:opacity .8s,transform .8s}
+.reveal-r.visible{opacity:1;transform:none}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:960px){
+  .nav-links{display:none}
+  .ham-btn{display:flex}
+  .about-grid,.pedidos-wrap,.contacto-wrap{grid-template-columns:1fr}
+  .about-accent{right:0;bottom:-1rem}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .stats-inner{grid-template-columns:1fr 1fr}
+}
+@media(max-width:580px){
+  .foot-grid{grid-template-columns:1fr}
+  .cta-btns{flex-direction:column;align-items:center}
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">🛒 ¡AGREGADO EXITOSAMENTE YA ES TUYO! 🌶️ </div>
+
+<!-- MODAL LOGIN -->
+<div class="overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">❌</button>
+    <h2>"¡HOLA DE NUEVO AMIGO! 👋"</h2>
+    <p>"ENTRA Y DISFRUTA DE TODOS LOS BENEFICIOS Y INGRESA PARA VER TUS PEDIDOS Y MAS" 🌶</p>
+    <div class="m-tabs">
+      <div class="m-tab on" onclick="swTab('log',this)">YA TENGO CUENTA</div>
+      <div class="m-tab" onclick="swTab('reg',this)">"SOY NUEVO CLIENTE"</div>
+    </div>
+    <div id="tab-log">
+      <div class="f-g"><label>"CORREO REGISTRADO"</label><input type="email" placeholder="tu@correo.com"/></div>
+      <div class="f-g"><label>"PASSWORD"</label><input type="password" placeholder="••••••••"/></div>
+      <button class="btn-primary" onclick="fakeLogin()">ENTRAR A MI CUENTA 🌶️ →</button>
+    </div>
+    <div id="tab-reg" style="display:none">
+      <div class="f-g"><label>"TU NOMBRE DE USUARIO"</label><input type="text" placeholder="Tu nombre completo"/></div>
+      <div class="f-g"><label>"TU CORREO ELECTRONICO"</label><input type="email" placeholder="tu@correo.com"/></div>
+      <div class="f-g"><label>"CONTRASEÑA SECRETA"</label><input type="password" placeholder="Mínimo 8 caracteres"/></div>
+      <button class="btn-primary" onclick="toast('¡Cuenta creada! Bienvenido 🎉')">REGISTRARME GRATIS 👤 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="logo"><span class="dot"></span></a>
+  <ul class="nav-links">
+    <li><a href="#acerca">🫙 ¿QUIENES SOMOS?</a></li>
+    <li><a href="#productos">🌶️ NUESTROS SABORES</a></li>
+    <li><a href="#pedidos">📦 PAQUETERIA</a></li>
+    <li><a href="#recetario">🍽️ MENU DE PLATILLOS</a></li>
+    <li><a href="#contacto">💬 COMUNICATE CON NOSOTROS</a></li>
+    <li><a href="#puntos">📍¿DONDE CONSEGUIR?</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-login" onclick="openModal()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      MI CUENTA 👤
+    <button class="nav-cart" id="cartBtn">
+      🛒 Carrito
+      <span class="cart-count" id="cN">0</span>
+    </button>
+    <div class="ham-btn" onclick="toggleMob()"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<!-- CARRITO -->
+<div id="cartOverlay" class="cart-overlay" onclick="cerrarCarrito()"></div>
+<div id="cartDrawer" class="cart-drawer">
+  <div class="cart-head">
+    <h2>Tu carrito</h2>
+    <button class="cart-close" onclick="cerrarCarrito()">✕</button>
+  </div>
+  <div id="cartItems" class="cart-items"></div>
+  <div id="cartTotal" class="cart-total" style="display:none">
+    <div class="total-row"><span>Subtotal</span><strong id="subtotal">$0</strong></div>
+    <div class="total-row"><span>Envío</span><strong>$80</strong></div>
+    <div class="total-final"><span>Total</span><strong id="total">$0</strong></div>
+    <button class="btn-checkout" onclick="procederAlPago()">PROCEDER AL PAGO →</button>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<div class="mob-nav" id="mobNav">
+  <a href="#acerca" onclick="toggleMob()">NUESTRA HISTORIA</a>
+  <a href="#productos" onclick="toggleMob()">NUESTRO SABORES</a>
+  <a href="#pedidos" onclick="toggleMob()">ORDENA YA</a>
+  <a href="#recetario" onclick="toggleMob()">INSPIRATE</a>
+  <a href="#contacto" onclick="toggleMob()">HABLEMOS</a>
+  <a href="#puntos" onclick="toggleMob()">DONDE COMPRAR</a>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-bg">
+    <video autoplay muted loop playsinline>
+      <source src="fondo.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-grain"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-bar"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span>🌶️</span>Mermelada Artesanal con Chiles — Chiapas, México</div>
+      <h1 class="hero-title">
+        <img src="logo.avif" alt="Chimelada Logo" class="logo-hero">
+      </h1>
+    <p class="hero-sub">"✨EL CAPRICHO DEL SABOR QUE TE GUSTARA🔥"</p>
+    <div class="hero-ctas">
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="mtrack"></div>
+</div>
+
+<!-- ═══ ACERCA ═══ -->
+<section id="acerca">
+  <div class="about-grid">
+    <div class="about-visual reveal-l">
+      <span class="about-badge">Desde 2018 🌶</span>
+      <div class="about-frame">
+        <img src="https://www.mercadosporunfuturosostenible.org/wp-content/uploads/2025/07/WhatsApp-Image-2025-07-03-at-7.58.02-PM.jpeg" alt="Mermelada artesanal"/>
+        <div class="about-frame-border"></div>
+      </div>
+      <div class="about-accent">
+        <div class="big">100%</div>
+        <div class="big">"ORIGINAL DE CHIAPAS"</div>
+      </div>
+    </div>
+    <div class="about-text reveal-r">
+      <span class="tag">"QUIENES SOMOS Y DE DONDE VENIMOS"</span>
+      <h2 class="h2">"UNA HISTORIA DE SABOR Y CHILES<br/><em>HECHO CON ALMA CHIAPANECA"</em></h2>
+      <p class="body-text">QUIENES SOMOS SOMOS UNA EMPRESA FAMILIAR ORIGINARIA DE BERRIOZABAL CHIAPAS, DEDICADOS A CREAR PRODUCTOS DE CALIDAD COMO lO ES CHIMELADA, UNA MERMELADA DE CHILE TIPO GOURMET, ELABORADA ARTESANALMENTE CON INGREDIENTES 100% NATURALES.</p>
+      <p class="body-text">ADEMAS, SOMOS UNA EMPRESA QUE ESTA EN CONSTANTE BUSQUEDA DE CERTIFICACIONES, QUE GARANTICEN TU BIENESTAR Y EL DE TUS SERES QUERIDOS, CUIDAMOS CADA PASO DE NUESTRO PROCESOS PARA OFRECERTE lO MEJOR.</p>
+      <P class="body-text">HECHO ESPECIALMENTE PARA COMPARTIR, CON AMOR, DEDICACION Y ESFUERZO CREAMOS ¡CHIMELADA!, MERMELADA CON CHILE EXQUISITA PARA SATISFACER, ¡El CAPRICHO DEL SABOR! </P>
+      <p class="body-text">CHIMELADA NACIO EN EL CORAZON DE CHIAPAS, DONDE lOS CHILES CRECEN BAJO  EL SOL MAS INTENSO DE MEXICO. COMBINAMOS LA TRADICION DE LA MERMELADA ARTESANAL CON LA POTENCIA Y CARACTER DE NUESTROS CHILES LOCALES PARA CREAR ALGO COMPLETAMENTE DIFERENTE Y UNICO.</p>
+      <p class="body-text">CADA FRASCO ES ELABORADO A MANO, SIN CONSERVADORES ARTIFICIALES, RESPETANDO EL PROCESO QUE GARANTIZA EL SABOR AUTENTICO EN CADA COMIDA Y BEBIDA, DONDE USTEN PUEDE CONBINAR CADA SABOR CON SUS EXQUISITOS PLATILLOS O TAMBIEN ESCACHAR SUS BEBIDAS YA SEA CON LIMONADA,JAMICA,HORCHATA.</p>
+      <div class="values">
+        <div class="val"><div class="val-i">🌿</div><h4>100% SIN CONSERVADORES </h4><p>"Puro, limpio, sin químicos Solo con ingredientes naturales y nada más"</p></div>
+        <div class="val"><div class="val-i">✋</div><h4>PROCESO ARTESANAL </h4><p>"Cada frasco elaborado con cuidado y dedicación con Pequeños lotes para máxima calidad"</p></div>
+        <div class="val"><div class="val-i">🌶️</div><h4>DESDE EL ORIGEN CHIAPAS </h4><p>"Del campo chiapaneco a tu mesa A poyando al productor local chiapaneco"</p></div>
+        <div class="val"><div class="val-i">🚚</div><h4>A TODO MEXICO </h4><p>"A todo México con empaque seguro y Tu pedido llega fresco en donde estés entre 3 a 5 días hábiles"</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRODUCTS ═══ -->
+<section id="productos">
+  <div class="section-head reveal">
+    <span class="tag">"EXPLORA NUESTRA LINEA DE SABORES IRRESISTIBLES"</span>
+    <h2 class="h2" style="color:#fff">"UN SABOR PARA CADA MOMENTO DE TU DIA"<br/><em style="color:var(--amber)">"SABORES QUE ENAMORAN A TU PALADAR"</em></h2>
+  </div>
+  <div class="prod-grid" id="prodGrid">
+    <div class="card reveal" data-s="suave">
+      <div class="card-img" style="background-image: url('')"></div>
+      <div class="card-ribbon" style="background-color: #f11629;">EDICIÓN ESPECIAL 🌟</div>
+      <div class="card-body">
+        <h3>"SALSA MACHA ARTESANAL"</h3>
+        <div class="spice"><span class="sp">🌶</span><span class="sp" style="opacity:.2">🌶</span><span class="sp" style="opacity:.2">🌶</span><span class="sp" style="opacity:.2">🌶</span></div>
+        <p class="card-desc">"Elaborada con chiles secos, ajo y semillas tostadas. Profunda, ahumada y adictiva desde la primera probada."</p>
+        <div class="card-footer"><div class="price">$130<small>/235g</small></div><button class="add" onclick="addCart('SALSA MACHA ARTESANAL')">COMPRAR</button></div>
+      </div>
+    </div>
+    <div class="card reveal" data-s="medio">
+      <div class="card-img" style="background-image:  url('')"></div>
+      <div class="card-ribbon" style="background-color: #ece92f;">MÁS VENDIDO 🔥</div>
+      <div class="card-body">
+        <h3>"COLECCIÓN 4 SABORES"</h3>
+        <div class="spice"><span class="sp">🌶</span><span class="sp">🌶</span><span class="sp" style="opacity:.2">🌶</span><span class="sp" style="opacity:.2">🌶</span></div>
+        <P class="card-des"> SABORES: HABANERO, CHIPOTLE, JALAPEÑO, CAFE, CACAO.</P>
+        <div class="card-footer"><div class="price">$180<small>/75g</small></div><button class="add" onclick="addCart('MERMELADA 4 SABORES')">COMPRAR</button></div>
+      </div>
+    </div>
+    <div class="card reveal" data-s="fuerte">
+      <div class="card-img" style="background-image: url('')"></div>
+      <div class="card-ribbon" style="background-color: #ca14b2;">RECIÉN LLEGADO ✨</div>
+      <div class="card-body">
+        <h3>"CHIMELADA HABANERO"</h3> 
+        <div class="spice"><span class="sp">🌶</span><span class="sp">🌶</span><span class="sp">🌶</span><span class="sp">🌶</span></div>
+        <P class="card-des"> SABORES: HABANERO, CHIPOTLE, JALAPEÑO, CAFE, CACAO.</P>
+        <div class="card-footer"><div class="price">$110<small>GRANDE</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 110)">comprar</button></div>
+        <div class="card-footer"><div class="price">$70<small>MEDIANO</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 70)">comprar</button></div>
+        <div class="card-footer"><div class="price">$45<small>MINI</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 45)">comprar</button></div>
+      </div>
+    </div>
+    <div class="card reveal" data-s="medio">
+      <div class="card-img" style="background-image: URL('')"><span class="card-emoji"></span></div>
+      <div class="card-ribbon" style="background:#0dec0d">IMPERDIBLE 💥</div>
+      <div class="card-body">
+        <h3>"CHIMELADA CHIPOTLE"</h3>
+        <div class="spice"><span class="sp">🌶</span><span class="sp">🌶</span><span class="sp" style="opacity:.2">🌶</span><span class="sp" style="opacity:.2">🌶</span></div>
+        <P class="card-des"> SABORES: HABANERO, CHIPOTLE, JALAPEÑO, CAFE, CACAO.</P>
+        <div class="card-footer"><div class="price">$110<small>GRANDE</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 110)">comprar</button></div>
+        <div class="card-footer"><div class="price">$70<small>MEDIANO</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 70)">comprar</button></div>
+        <div class="card-footer"><div class="price">$45<small>MINI</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 45)">comprar</button></div>
+      </div>
+    </div>
+    <div class="card reveal" data-s="suave">
+      <div class="card-img" style="background-image: URL('')"></div>
+      <div class="card-ribbon" style="background:#dae71c">PRUÉBALO 🌶️</div>
+      <div class="card-body">
+        <h3>"CHIMELADA JALAPEÑO"</h3>
+        <div class="spice"><span class="sp">🌶</span><span class="sp" style="opacity:.2">🌶</span><span class="sp" style="opacity:.2">🌶</span><span class="sp" style="opacity:.2">🌶</span></div>
+        <P class="card-des"> SABORES: HABANERO, CHIPOTLE, JALAPEÑO, CAFE, CACAO.</P>
+        <div class="card-footer"><div class="price">$110<small>GRANDE</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 110)">comprar</button></div>
+        <div class="card-footer"><div class="price">$70<small>MEDIANO</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 70)">comprar</button></div>
+        <div class="card-footer"><div class="price">$45<small>MINI</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 45)">comprar</button></div>
+      </div>
+    </div>
+    <div class="card reveal" data-s="fuerte">
+      <div class="card-img" style="background-image: URL('')"></div>
+      <div class="card-ribbon" style="background-color: #b4f306;">FAVORITO NUEVO ⭐</div>
+      <div class="card-body">
+        <h3>"CHIMELADA CAFÉ"</h3>
+        <div class="spice"><span class="sp">🌶</span><span class="sp">🌶</span><span class="sp">🌶</span><span class="sp" style="opacity:.2">🌶</span></div>
+        <P class="card-des"> SABORES: HABANERO, CHIPOTLE, JALAPEÑO, CAFE, CACAO.</P>
+        <div class="card-footer"><div class="price">$110<small>GRANDE</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 110)">comprar</button></div>
+        <div class="card-footer"><div class="price">$70<small>MEDIANO</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 70)">comprar</button></div>
+        <div class="card-footer"><div class="price">$45<small>MINI</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 45)">comprar</button></div>
+      </div>
+    </div>
+    <div class="card reveal" data-s="fuerte">
+      <div class="card-img" style="background-image: URL('')"><span class="card-emoji"></span></div>
+      <div class="card-ribbon" style="background-color: #42b1f1;">NUEVO 🔥</div>
+      <div class="card-body">
+        <h3>"CHIMELADA CACAO"</h3>
+        <div class="spice"><span class="sp">🌶</span><span class="sp">🌶</span><span class="sp">🌶</span><span class="sp" style="opacity:.2">🌶</span></div>
+        <P class="card-des"> SABORES: HABANERO, CHIPOTLE, JALAPEÑO, CAFE, CACAO.</P>
+        <div class="card-footer"><div class="price">$110<small>GRANDE</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 110)">comprar<button></div>
+        <div class="card-footer"><div class="price">$70<small>MEDIANO</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 70)">comprar</button></div>
+        <div class="card-footer"><div class="price">$45<small>MINI</small></div><button class="add" onclick="addCart('MERMELADA SABOR CHIPOTLE', 45)">comprar</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARALLAX QUOTE -->
+<div class="parallax-section" id="par">
+  <div class="parallax-bg" id="parBg"></div>
+  <div class="parallax-overlay"></div>
+  <div class="parallax-content">
+    <p class="big-quote reveal">"SI LA VIDA TE DA CHILES Y LIMONES"<br/><em>"HAZ CHIMELADA CON EL SABOR QUE TE HACE VOLVER LOCO POR MAS."</em></p>
+  </div>
+</div>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div class="reveal"><div class="s-num" data-n="70000">0</div><div class="s-lab">"FRASCOS ENTREGADOS 🫙"</div></div>
+    <div class="reveal"><div class="s-num" data-n="6">0</div><div class="s-lab">"SABORES ARTESANALES UNICOS 🌶️"</div></div>
+    <div class="reveal"><div class="s-num" data-n="100%" data-sfx="%">0%</div><div class="s-lab">"NATURAL Y ARTESANAL ✨"</div></div>
+    <div class="reveal"><div class="s-num" data-n="6.9" data-sfx="★">0★</div><div class="s-lab">"CALIFICACION DE LOS CLIENTES"</div></div>
+  </div>
+</div>
+
+<!-- ═══ PEDIDOS ═══ -->
+<section id="pedidos">
+  <div class="pedidos-wrap">
+    <div class="reveal-l">
+      <span class="tag">"ORDENA AHORA Y NO DEJES PASAR ESTA GRAN OPORTUNIDAD"</span>
+      <h2 class="h2" style="color:#fff">"TU CHIMELADA EN CAMINO<br/><em style="color:var(--amber)">TE LO DEJAMOS HASTA LA PUERTA DE TU CASA"</em></h2>
+      <p class="body-text">"Enviamos a todo México con empaque artesanal. Tu pedido llega fresco y listo para disfrutar. la Frescura garantizada en cada frasco. Perfecto para regalo o para ti."</p>
+      <div class="ped-steps">
+        <div class="step"><div class="s-num-c">1</div><div><h4>"SELECCIONA TU SABOR FAVORITO"</h4><p>"Tenemos sabores para todos los gustos 🌶️"</p></div></div>
+        <div class="step"><div class="s-num-c">2</div><div><h4>"COMPLETA TU PEDIDO"</h4><p>"Rápido y sencillo, solo tus datos básicos"</p></div></div>
+        <div class="step"><div class="s-num-c">3</div><div><h4>"TE CONTACTAMOS AL MOMENTO"</h4><p>"Te escribimos en minutos para confirmar"</p></div></div>
+        <div class="step"><div class="s-num-c">4</div><div><h4>"¡LISTO PARA SABOREAR!"</h4><p>"Entrega en 3-5 días hábiles a todo México 🇲🇽"</p></div></div>
+      </div>
+    </div>
+    <div class="ped-form reveal-r">
+      <h3>TU PEDIDO ESTA A UN PASO 🛒</h3>
+      <div class="form-row">
+        <div class="f-g"><label>"¿COMO TE LLAMAS?"</label><input type="text" placeholder="Nombre(s)"/></div>
+        <div class="f-g"><label>"TU APELLIDO PATERNO"</label><input type="text" placeholder="Apellido(s)"/></div>
+      </div>
+      <div class="f-g"><label>"¿A QUE CORREO TE ESCRIBIMOS?"</label><input type="email" placeholder="@GMAIL.COM"/></div>
+      <div class="f-g"><label>"¿A QUE NUEMERO TE CONTACTAMOS?"</label><input type="tel" placeholder="+52 961 238 18 05"/></div>
+      <div class="form-row">
+        <div class="f-g"><label>"¿ELIGE EL SABOR QUE MAS TE GUSTE ATI?"</label>
+          <select>
+            <option>SALSA MACHA 🔥 – $130,$60</option>
+            <option>MANGO PIÑA & HABANERO 🥭 – $110,$70,$45</option>
+            <option>TAMARINDO CHIPOTLE 💨 – $110,$70,$45</option>
+            <option>CHILE MORRON JALAPEÑO 🫑 – $110,$70,$45</option>
+            <option>TAMARINDO CAFE ☕ – $110,$70,$45</option>
+            <option>CHILE NEGRO & CACAO 🍫🔥– $110,$70,$45</option>
+          </select>
+        </div>
+        <div class="f-g"><label>"SELECCIONA EL TAMAÑO QUE QUIERAS"</label>
+          <select><option>FRASCO MINI — ¡EL MAS POPULAR! 🔥</option><option>FRASCO MEDIANO — EL FAVORITO</option><option>FRASCO GRANDE — EL FAVORITO</option><option>BOLSA GRANDE — PARA COMPARTIR</option><option>BOLSA CHICA — PARA COMPARTIR</option><option>PAQUETE 4 FRASCOS  — ¡EL MAS POPULAR! 🔥</option></select>
+        </div>
+      </div>
+      <div class="f-g"><label>"CALLE, NUMERO, COLONIA, CIUDAD"</label><textarea rows="2" placeholder="Calle, número, colonia, ciudad, CP"></textarea></div>
+      <div class="f-g"><label>"¿ALGUNA INDICACION ESPECIAL?"</label><textarea rows="2" placeholder="¿Algo especial? (regalo, empaque extra, etc.)"></textarea></div>
+      <button class="btn-primary" onclick="toast('¡Pedido enviado! Te contactamos pronto 🌶')">¡QUIERO MI CHIMELADA! 🌶️ →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ RECETARIO ═══ -->
+<section id="recetario">
+  <div class="section-head reveal">
+    <span class="tag" style="color:#2d8a2d">"INSPÍRATE Y COCINA ALGO BIEN RICO"</span>
+    <h2 class="h2" style="color:#fff">"RECETAS QUE ENAMORAN<br/><em style="color:var(--amber)">Y DALE SABOR A TU COCINA"</em></h2>
+  </div>
+  <div class="recetas-grid">
+    <div class="receta reveal">
+      <div class="receta-img">
+        <img src="https://static.wixstatic.com/media/9b814e_7f8dfbc8f3a34341bd0a1b9b267fb2e8~mv2_d_5184_3456_s_4_2.jpg/v1/fill/w_250,h_166,al_c,q_90,enc_auto/9b814e_7f8dfbc8f3a34341bd0a1b9b267fb2e8~mv2_d_5184_3456_s_4_2.jpg" alt="Tabla de quesos"/>
+        <span class="receta-chip">💎 EXCLUSIVO</span>
+        <span class="receta-time">⏱ 40 MIN</span>
+      </div>
+      <div class="receta-body">
+        <p class="receta-cat">PLATOS FUERTES</p>
+        <h3>CAMARONES CON CHIMELADA</h3>
+        <p><strong>INGREDIENTES:</strong></p>
+        <ul>
+          <li>2 ml de aceite vegetal</li>
+          <li>7 pzas de camarón mediano sin cabeza.</li>
+          <li>90 gr de arroz rojo.</li>
+          <li>90 gr de mermelada chimelada</li>
+        </ul>
+        <p><strong>PROCEDIMIENTO:</strong></p>
+        <ul>
+          <li>1-En una sartén agregar el aceite, freir los camarones , incorporar la mermelada chimelada.</li>
+          <li>2-Rectificar sazón</li>
+          <li>3-Servir en un plato con timbal de arroz y decorar con perejil finamente picado.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="receta reveal">
+      <div class="receta-img">
+        <img src="https://static.wixstatic.com/media/9b814e_2e58a6b3bd414bd99ae40b2a369c377d~mv2_d_1904_1576_s_2.png/v1/fill/w_250,h_206,al_c,q_95,enc_auto/9b814e_2e58a6b3bd414bd99ae40b2a369c377d~mv2_d_1904_1576_s_2.png" alt="Costillas"/>
+        <span class="receta-chip">🔥 MAS POPULARr</span>
+        <span class="receta-time">⏱ 40 MIN</span>
+      </div>
+      <div class="receta-body">
+        <p class="receta-cat">ENTRADAS</p>
+        <h3>PINCHO CON CHIMELADA</h3>
+        <p><strong>INGREDIENTES:</strong></p>
+        <ul>
+          <li>5 gr Jamón ahumado</li>
+          <li>5 gr de tipo Queso manchego</li>
+          <li>5 gr Manzana verde</li>
+          <li>5 gr Ate de manzana</li>
+          <li>10 gr de mermelada chimelada.</li>
+        </ul>
+        <p><strong>PROCEDIMIENTO:</strong></p>
+        <ul>
+          <li>1-Cortar en cubos el jamón</li>
+          <li>2-Cortar en cubos del queso tipo manchego</li>
+          <li>3-Cortar en cubo la manzana</li>
+          <li>4-Cortar en cubo el ate</li>
+          <li>5-Hacer el pincho dejando la manzana hasta abajo del pincho.</li>
+          <li>6-Sobre el plato colocar una cucharada de mermelada chimelada y parar el pincho la mermelada.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="receta reveal">
+      <div class="receta-img">
+        <img src="https://static.wixstatic.com/media/9b814e_b54b6dcde0354c0bbf960a961222f3aa~mv2_d_5184_3456_s_4_2.jpg/v1/fill/w_250,h_166,al_c,q_90,enc_auto/9b814e_b54b6dcde0354c0bbf960a961222f3aa~mv2_d_5184_3456_s_4_2.jpg" alt="Helado"/>
+        <span class="receta-chip">📌 ESPECIAL</span>
+        <span class="receta-time">⏱ 15 MIN</span>
+      </div>
+      <div class="receta-body">
+        <p class="receta-cat">ENSALADAS</p>
+        <h3>ENSALADA CON CHIMELADA</h3>
+        <P><strong>INGREDIENTES:</strong></P>
+        <ul>
+          <li>1 hoja de lechuga roma</li>
+          <li>1 hoja de lechuga italiana</li>
+          <li>4 láminas de zanahoria</li>
+          <li>2 jitomate cherry</li>
+          <li>8 Cubos de queso panela</li>
+          <li>8 Cubos  de ate</li>
+          <li>2 cucharaditas de mermelda chimelada</li>
+        </ul>
+        <p><strong>PROCEDIMIENTO:</strong></p>
+        <ul>
+          <li>1-Integrar en un bowl los ingredientes, y servir sobre la ensalda.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="receta reveal">
+      <div class="receta-img">
+        <img src="https://static.wixstatic.com/media/9b814e_8d8701a5029c417abb18d47d57e369df~mv2_d_3456_5184_s_4_2.jpg/v1/fill/w_250,h_375,al_c,q_90,enc_auto/9b814e_8d8701a5029c417abb18d47d57e369df~mv2_d_3456_5184_s_4_2.jpg" alt="Tostadas"/>
+        <span class="receta-chip">🌟 RECOMENDADO</span>
+        <span class="receta-time">⏱ 18 MIN</span>
+      </div>
+      <div class="receta-body">
+        <p class="receta-cat">BEBIDAS</p>
+        <h3>COCTEL CHIME KOKO</h3>
+        <p><strong>INGREDIENTES:</strong></p>
+        <ul>
+          <li>2 onzas de ron Bonampak</li>
+          <li>1.5 onzas de kalahua</li>
+          <li>1 dash de limón</li>
+          <li>7 cubos de hielo</li>
+          <li>1 fresa</li>
+          <li>2 hojas de menta</li>
+          <li>1 Dash de canela en polvo</li>
+        </ul>
+        <p><strong>PROCEDIMIENTO:</strong></p>
+        <ul>
+          <li>1-Licuar todos los ingredientes hasta lograr la consistencia frapè.</li>
+          <li>2-Servir en copa martinera.</li>
+          <li>3-Adornar con fresa y hojas de menta.</li>
+          <li>4-Rematar con un toque de canela en polvo.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="receta reveal">
+      <div class="receta-img">
+        <img src="https://static.wixstatic.com/media/9b814e_b8d2546919c74abe94ef129192fc98ee~mv2_d_5184_3456_s_4_2.jpg/v1/fill/w_249,h_166,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/9b814e_b8d2546919c74abe94ef129192fc98ee~mv2_d_5184_3456_s_4_2.jpg" alt="Cóctel"/>
+        <span class="receta-chip">💯 CLASICO</span>
+        <span class="receta-time">⏱ 20 MIN</span>
+      </div>
+      <div class="receta-body">
+        <p class="receta-cat">DESAYUNOS</p>
+        <h3>FILETE DE PESCADO EN SALSA DE CHIMELADA</h3>
+        <p><strong>INGREDIENTES:</strong></p>
+        <ul>
+          <li>150 gr de filete de tilapia</li>
+          <li>2 aceite de oliva</li>
+          <li>1 sal/pimienta</li>
+          <li>10 gr de mermelada chimelada</li>
+          <li>1 porción de lechugas y jitomates</li>
+        </ul>
+        <P><strong>PROCEDIMIENTO:</strong></P>
+        <ul>
+          <li>1-En una sartén antihaderente cocer los filetes con un poco de aceite de oliva.</li>
+          <li>2-Ya que están cocidos, agregar la mermelada chimelada sobre los filetes untando directamente.</li>
+          <li>3-Servir en un plato y acompañar con la ensalada.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="receta reveal" id="pollo-parrilla">
+      <div class="receta-img">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuc-SLe_9pxegmMKU1LDrmB57V2EgtkFE89g&s" alt="Pollo"/>
+        <span class="receta-chip">❤️ MAS AMADO</span>
+        <span class="receta-time">⏱ 35 MIN</span>
+      </div>
+      <div class="receta-body">
+        <p class="receta-cat">BOTANAS</p>
+        <h3>PHILADELPHIA CON CHIMELADA</h3>
+        <p><strong>INGREDIENTES:</strong></p>
+        <ul>
+          <li>6.8 ounces Queso Philadelphia (crema)</li>
+          <li>7.1 ounces Mermelada (fresa, mango o zarzamora)</li>
+          <li>0.8 cups Crema para batir (crema Lyncott o similar)</li>
+          <li>4 tablespoons Azúcar glass</li>
+          <li>5.4 ounces Galletas Marías o Oreo</li>
+          <li>1.8 ounces Mantequilla derretida</li>
+          <li>1 teaspoons Esencia de vainilla</li>
+        </ul>
+        <P><strong>PROCEDIMIENTO:</strong></P>
+        <ul>
+          <li>1-Tritura las galletas hasta hacerlas polvo. Mezcla con la mantequilla derretida hasta formar una pasta.</li>
+          <li>2-Bate la crema para batir con el azúcar glass hasta que tenga picos firmes. Reserva en el refrigerador.</li>
+          <li>3-Bate el queso Philadelphia con la esencia de vainilla hasta que quede suave y sin grumos.</li>
+          <li>4-Lleva al refrigerador mínimo 2 horas antes de servir.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section id="testimonios">
+  <div class="tag reveal" style="justify-content:center">"100% OPINIONES REALES"</div>
+  <h2 class="h2" style="color: #fff;"text-align:center">"YA LA PROBARON Y VOLVIERON<br><em style="color: var(--amber);">AL SABOR QUE ENAMORA"</em></h2>
+  <div class="testi-overflow">
+    <div class="testi-track" id="testiTrack">
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">La de habanero con mango es adictiva. La puse en todo durante una semana. ¡Mi familia pide más frascos cada mes!</p><div class="testi-author"><div class="testi-av">MR</div><div class="testi-info"><strong>María R.</strong><span>Ciudad de México</span></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">La usé en un evento de maridaje con quesos y fue el hit de la noche. Todos preguntaban dónde conseguirla.</p><div class="testi-author"><div class="testi-av">CL</div><div class="testi-info"><strong>Carlos L.</strong><span>Guadalajara</span></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">No soy fan del picante pero la de pasilla y fresa me conquistó. El equilibrio es perfecto y el frasco es muy bonito.</p><div class="testi-author"><div class="testi-av">AV</div><div class="testi-info"><strong>Ana V.</strong><span>Tuxtla Gutiérrez</span></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">La pedí por curiosidad y terminé comprando 6 frascos para regalo. Mis amigos me mandan mensajes de gracias.</p><div class="testi-author"><div class="testi-av">JP</div><div class="testi-info"><strong>Jesús P.</strong><span>Monterrey</span></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">La puse en mi burger y cambió mi vida. Adiós ketchup, hola Chimelada. Sin vuelta atrás posible.</p><div class="testi-author"><div class="testi-av">LG</div><div class="testi-info"><strong>Laura G.</strong><span>Oaxaca</span></div></div></div>
+      <!-- duplicado para loop -->
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">La de habanero con mango es adictiva. La puse en todo durante una semana. ¡Mi familia pide más frascos cada mes!</p><div class="testi-author"><div class="testi-av">MR</div><div class="testi-info"><strong>María R.</strong><span>Ciudad de México</span></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">La usé en un evento de maridaje con quesos y fue el hit de la noche. Todos preguntaban dónde conseguirla.</p><div class="testi-author"><div class="testi-av">CL</div><div class="testi-info"><strong>Carlos L.</strong><span>Guadalajara</span></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">No soy fan del picante pero la de pasilla y fresa me conquistó. El equilibrio es perfecto y el frasco es muy bonito.</p><div class="testi-author"><div class="testi-av">AV</div><div class="testi-info"><strong>Ana V.</strong><span>Tuxtla Gutiérrez</span></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">La pedí por curiosidad y terminé comprando 6 frascos para regalo. Mis amigos me mandan mensajes de gracias.</p><div class="testi-author"><div class="testi-av">JP</div><div class="testi-info"><strong>Jesús P.</strong><span>Monterrey</span></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">La puse en mi burger y cambió mi vida. Adiós ketchup, hola Chimelada. Sin vuelta atrás posible.</p><div class="testi-author"><div class="testi-av">LG</div><div class="testi-info"><strong>Laura G.</strong><span>Oaxaca</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACTO ═══ -->
+<section id="contacto">
+  <div class="contacto-wrap">
+    <div class="c-info reveal-l">
+      <span class="tag">"ESTAMOS PARA TI"</span>
+      <h2 class="h2" style="color:#fff">"CONVERSEMOS<br/><em style="color:var(--amber)">DE SABORES"</em></h2>
+      <p class="body-text">"Responderemos tu mensaje en menos de 24 horas. ¡Con gusto te atenderemos!" "Escríbenos por cualquier medio, siempre hay alguien listo para atenderte."</p>
+      <div class="c-data">
+        <div class="c-row"><div class="c-icon">💳</div>Pago seguro,Tarjeta, transferencia o efectivo</div>
+        <div class="c-row"><div class="c-icon">📍</div>1ª Poniente Sur, No.144, 1er Piso, Col. Centro. Berriozábal, Chiapas.</div>
+        <div class="c-row"><div class="c-icon">📲</div>+52 961 254 8701 | 961 102 9046(WhatsApp)</div>
+        <div class="c-row"><div class="c-icon">✉️</div>chimeladaoficial@gmail.com</div>
+        <div class="c-row"><div class="c-icon">🕐</div>LUN – SAB: 24 HRS  DOM – 9:00am - 3:00pm</div>
+      </div>
+      <div class="socials">
+        <a href="https://wa.me/9612548701" target="_blank" class="soc whatsapp">
+         <i class="fa-brands fa-whatsapp"></i>
+        </a>
+        <a href="https://facebook.com/@chimelada" target="_blank" class="soc f">
+          <i class="fa-brands fa-facebook"></i>
+        </a>
+        <a href="https://twitter.com/https://x.com/chimelada" target="_blank" class="soc">
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a href="https://youtube.com/@chimelada" target="_blank" class="soc">
+          <i class="fa-brands fa-youtube"></i>
+        </a>
+        <a href="https://instagram.com/www.chimelada.com/" target="_blank" class="soc">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+      </div>
+    </div>
+    <div class="c-form reveal-r">
+      <h3>"ESCRIBENOS CON GUSTO NOSOTROS TE ATENDEREMOS"</h3>
+      <div class="form-row">
+        <div class="f-g"><label>TU NOMBRE COMPLETO</label><input type="text" placeholder="Tu nombre"/></div>
+        <div class="f-g"><label>TU CORREO ELECTRONICO</label><input type="email" placeholder="tu@correo.com"/></div>
+      </div>
+      <div class="f-g"><label>¿EN QUE TE PODEMOS AYUDAR?</label>
+        <select>
+          <option>Quiero saber más del producto</option>
+          <option>Quiero hacer un pedido grande</option>
+          <option>Quiero vender Chimelada</option>
+          <option>Propuesta de colaboración</option>
+          <option>Otro tema</option>
+        </select>
+      </div>
+      <div class="f-g"><label>¿QUE NECESITAS?</label><textarea rows="5" placeholder="Cuéntanos en qué podemos ayudarte..."></textarea></div>
+      <button class="btn-primary" onclick="toast('¡Mensaje enviado! Respondemos en 24hrs 📩')">QUIERO QUE ME CONTACTEN →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PUNTOS ═══ -->
+<section id="puntos">
+  <div class="section-head reveal">
+    <span class="tag">"DISPONIBLES EN"</span>
+    <h2 class="h2" style="color:#fff">"ESTAMOS AQUÍ PARA TI"<br/><em style="color:var(--amber)">"ENCUÉNTRANOS CERCA"</em></h2>
+  </div>
+  <div class="map-box reveal">
+    <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3820.3!2d-93.1!3d16.7!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTbCsDQyJzAwLjAiTiA5M8KwMDYnMDAuMCJX!5e0!3m2!1ses!2smx!4v1700000000000!5m2!1ses!2smx" 
+            width="100%" 
+            height="450" 
+            style="border:0; border-radius: 15px;" 
+            allowfullscreen="" 
+            loading="lazy">
+        </iframe>
+    </div>
+  <div class="puntos-grid">
+    <div class="punto-card reveal">
+        <div class="punto-image">
+            <img src="https://static.wixstatic.com/media/9b814e_38eeb54bb83d42718545ac8eea6bd340~mv2.jpg/v1/crop/x_3,y_88,w_1270,h_762/fill/w_270,h_162,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/TERRAZA%20VERDE.jpg" alt="Fachada de Terraza Verde en Chiapas">
+        </div>
+        <div class="punto-info">
+            <h3 class="punto-title">TERRAZA <span class="destacado">VERDE</span></h3>
+            <div class="punto-details">
+                <p>Calzada al Sumidero km. 22, Mirador los Chiapas</p>
+                <p>Parque Nacional Cañón del Sumidero - Tuxtla Gtz</p>
+            </div>
+            <div class="punto-actions">
+                <a href="#" class="action-icon facebook" target="_blank" title="Visitar en Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="tel:9611234567" class="action-icon phone" title="Llamar"><i class="fas fa-phone"></i></a>
+                <a href="https://maps.app.goo.gl/TU_ENLACE_AQUÍ" class="action-icon maps" target="_blank" title="Cómo Llegar"><i class="fas fa-map-marker-alt"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="punto-card reveal">
+        <div class="punto-image">
+            <img src="https://static.wixstatic.com/media/9b814e_60be10d5b4514c7a885b83e9ef34519c~mv2.jpg/v1/fill/w_280,h_157,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/SOL%20DELICIAS.jpg" alt="Interior de Sol Delicias en Tuxtla">
+        </div> 
+        <div class="punto-info">
+            <h3 class="punto-title">SOL <span class="destacado">DELICIAS</span></h3>
+            <div class="punto-details">
+                <p>Calzada a Club Campestre #249</p>
+                <p>- Tuxtla Gtz</p>
+            </div>
+            <div class="punto-actions">
+                <a href="#" class="action-icon facebook" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="tel:9611234567" class="action-icon phone"><i class="fas fa-phone"></i></a>
+                <a href="https://maps.app.goo.gl/TU_ENLACE_AQUÍ" class="action-icon maps" target="_blank"><i class="fas fa-map-marker-alt"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="puntos-grid">
+    <div class="punto-card reveal">
+        <div class="punto-image">
+            <img src="https://static.wixstatic.com/media/9b814e_c47b5240623e493c8575d2aca5c53cd0~mv2.jpg/v1/fill/w_280,h_157,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/TUXQUESOS.jpg" alt="Tuxquesos">
+        </div>
+        <div class="punto-info">
+            <h3 class="punto-title">TUX<span class="destacado">QUESOS</span></h3>
+            <div class="punto-details">
+                <p>Salida a Berriozábal, plaza La Pochota local 6,</p>
+                <p>a lado de autobuses Romo. - Tuxtla Gtz</p>
+            </div>
+            <div class="punto-actions">
+                <a href="#" class="action-icon facebook"><i class="fab fa-facebook"></i></a>
+                <a href="tel:9611234567" class="action-icon phone"><i class="fas fa-phone"></i></a>
+                <a href="URL_GOOGLE_MAPS" class="action-icon maps"><i class="fas fa-map-marker-alt"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="punto-card reveal">
+        <div class="punto-image">
+            <img src="https://static.wixstatic.com/media/9b814e_4643eda722ab43bea5779388bbd9c3ec~mv2.jpg/v1/fill/w_280,h_157,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/DO%C3%91A%20LETY.jpg" alt="Doña Lety">
+        </div>
+        <div class="punto-info">
+            <h3 class="punto-title">DOÑA <span class="destacado">LETY</span></h3>
+            <div class="punto-details">
+                <p>Plaza La Américas, 5a. Nte. Pte. A un costado</p>
+                <p>de OCC. - Tuxtla Gtz</p>
+            </div>
+            <div class="punto-actions">
+                <a href="#" class="action-icon facebook"><i class="fab fa-facebook"></i></a>
+                <a href="tel:9611234567" class="action-icon phone"><i class="fas fa-phone"></i></a>
+                <a href="URL_GOOGLE_MAPS" class="action-icon maps"><i class="fas fa-map-marker-alt"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="punto-card reveal">
+    <div class="punto-image">
+        <img src="https://static.wixstatic.com/media/9b814e_4742d3897b1f48aa96a06d29747e203e~mv2.jpg/v1/fill/w_280,h_157,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/CANELA%20Y%20MIEL.jpg" alt="Canela y Miel Tuxtla">
+    </div>
+    <div class="punto-info">
+        <h3 class="punto-title">CANELA Y <span class="destacado">MIEL</span></h3>
+        <div class="punto-details">
+            <p>Lagunas de Montebello 23, Los Laguitos</p>
+            <p>Tuxtla Gtz, Chiapas</p>
+        </div>
+        <div class="punto-actions">
+            <a href="#" class="action-icon facebook"><i class="fab fa-facebook"></i></a>
+            <a href="tel:9611234567" class="action-icon phone"><i class="fas fa-phone"></i></a>
+            <a href="https://maps.app.goo.gl/Ejemplo1" target="_blank" class="action-icon maps"><i class="fas fa-map-marker-alt"></i></a>
+        </div>
+    </div>
+</div>
+<div class="punto-card reveal">
+    <div class="punto-image">
+        <img src="https://static.wixstatic.com/media/9b814e_f18376348c6148c48547afcd936943b4~mv2.jpg/v1/crop/x_2,y_86,w_958,h_542/fill/w_280,h_158,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/HECHO%20EN%20CASA.jpg" alt="Hecho en Casa San Cristóbal">
+    </div>
+    <div class="punto-info">
+        <h3 class="punto-title"><span class="destacado">CASA</span></h3>
+        <div class="punto-details">
+            <p>Av. Flavio A. Paniagua #2</p>
+            <p>San Cristóbal de Las Casas, Chiapas</p>
+        </div>
+        <div class="punto-actions">
+            <a href="#" class="action-icon facebook"><i class="fab fa-facebook"></i></a>
+            <a href="tel:9671234567" class="action-icon phone"><i class="fas fa-phone"></i></a>
+            <a href="https://maps.app.goo.gl/Ejemplo2" target="_blank" class="action-icon maps"><i class="fas fa-map-marker-alt"></i></a>
+        </div>
+    </div>
+</div>
+<div class="punto-card reveal">
+    <div class="punto-image">
+        <img src="https://static.wixstatic.com/media/9b814e_c80d0f9ed6bb4439b87d9d47262b899f~mv2.jpg/v1/crop/x_0,y_47,w_960,h_544/fill/w_280,h_159,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/MANOS%20DE%20IXTLE.jpg" alt="Hecho en Casa San Cristóbal">
+    </div>
+    <div class="punto-info">
+        <h3 class="punto-title">MANOS DE <span class="destacado">IXTLE</span></h3>
+        <div class="punto-details">
+            <p>Av.parque central de berriozabal. </p>
+            <p>Andador Artesanal del Parque de Berriozábal.</p>
+        </div>
+        <div class="punto-actions">
+            <a href="#" class="action-icon facebook"><i class="fab fa-facebook"></i></a>
+            <a href="tel:9671234567" class="action-icon phone"><i class="fas fa-phone"></i></a>
+            <a href="https://maps.app.goo.gl/Ejemplo2" target="_blank" class="action-icon maps"><i class="fas fa-map-marker-alt"></i></a>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ═══ FINAL CTA ═══ -->
+<div class="final-cta">
+  <div class="cta-bg-img"></div>
+  <div class="cta-overlay"></div>
+  <div class="cta-inner">
+    <p class="cta-pre reveal">"El SABOR QUE SIEMPRE QUISISTES PROBAR"</p>
+    <h2 class="cta-title reveal">"LLEVA UNA<br/><em>CHIMELADA</em><br/>A CASA HOY MISMO"</h2>
+    <p class="cta-sub reveal">"PREPARADA AL MOMENTO CON INGREDIENTES FRESCOS. TE LA LLEVAMOS DONDE ESTES."</p>
+    <div class="cta-btns reveal">
+      <a href="https://wa.me/961 102 9046" class="cta-fire">🛒 ORDENAR AHORA</a>
+      <a href="#pedidos" class="cta-outline">📋 HACER MI PEDIDO</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand foot-col">
+      <div class="logo"><span class="dot"></span>#CHIMELOVERS</div>
+      <p>CUIDEN SU SALUD CON LAS MEDIDAS DE HIGIENE Y EJERCICIO.</p>
+    </div>
+    <div class="foot-col">
+      <h5>NAVEGAR</h5>
+      <ul>
+        <li><a href="#acerca">ACERCA DE</a></li>
+        <li><a href="#productos">PRODUCTOS</a></li>
+        <li><a href="#pedidos">PEDIDOS</a></li>
+        <li><a href="#recetario">RECETARIO</a></li>
+        <li><a href="#contacto">CONTACTOS</a></li>
+        <li><a href="#puntos">PUNTOS DE VENTAS</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h5>SABORES IRESISTIBLES</h5>
+      <ul>
+        <li><a href="#">SALSA MACHA</a></li>
+        <li><a href="#">SABOR HABANERO</a></li>
+        <li><a href="#">SABOR CHIPOTLE</a></li>
+        <li><a href="#">SABOR CAFE</a></li>
+        <li><a href="#">SABOR JALAPEÑO</a></li>
+        <li><a href="#">SABOR CACAO</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h5>CONTACTANOS</h5>
+      <ul>
+        <li><a href="#">🏠 1ª Poniente Sur, No.144, 1er Piso, Col. Centro. Berriozábal, Chiapas.</a></li>
+        <li><a href="#">📞 961 254 8701 | 961 102 9046</a></li>
+        <li><a href="#">📩 chimeladaoficial@gmail.com</a></li>
+        <li><a href="#">🕒 LUNES–SABADO 24 hrs</a></li>
+        <li><a href="#">🗓️ DOMINGOS– 9AM-3PM</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2025 Chimelada · Mermelada Artesanal con Chiles · Hecho con 🌶 en Chiapas</span>
+    <p><a href="#">Aviso de privacidad</a> · <a href="#">Términos</a></p>
+  </div>
+</footer>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATOS DE PRODUCTOS - CORRECTO
+// ═══════════════════════════════════════════════════════════════
+const productosBase = [
+  {
+    nombre: 'SALSA MACHA ARTESANAL',
+    imagen: '🔥',
+    precios: [
+      { tamaño: 'Grande', precio: 130 },
+      { tamaño: 'Mediano', precio: 95 },
+    ]
+  },
+  {
+    nombre: 'MERMELADA 4 SABORES',
+    imagen: '🌶️',
+    precios: [
+      { tamaño: 'Grande', precio: 150 },
+      { tamaño: 'Mediano', precio: 100 },
+      { tamaño: 'Mini', precio: 60 }
+    ]
+  },
+  {
+    nombre: 'MERMELADA HABANERO',
+    imagen: '🌶️',
+    precios: [
+      { tamaño: 'Grande', precio: 110 },
+      { tamaño: 'Mediano', precio: 70 },
+      { tamaño: 'Mini', precio: 45 }
+    ]
+  },
+  {
+    nombre: 'MERMELADA CHIPOTLE',
+    imagen: '🌶️',
+    precios: [
+      { tamaño: 'Grande', precio: 110 },
+      { tamaño: 'Mediano', precio: 70 },
+      { tamaño: 'Mini', precio: 45 }
+    ]
+  },
+  {
+    nombre: 'MERMELADA JALAPEÑO',
+    imagen: '🌶️',
+    precios: [
+      { tamaño: 'Grande', precio: 110 },
+      { tamaño: 'Mediano', precio: 70 },
+      { tamaño: 'Mini', precio: 45 }
+    ]
+  },
+  {
+    nombre: 'MERMELADA CAFÉ',
+    imagen: '☕',
+    precios: [
+      { tamaño: 'Grande', precio: 80 },
+      { tamaño: 'Mediano', precio: 60 },
+      { tamaño: 'Mini', precio: 40 }
+    ]
+  },
+  {
+    nombre: 'MERMELADA CACAO',
+    imagen: '🍫',
+    precios: [
+      { tamaño: 'Grande', precio: 110 },
+      { tamaño: 'Mediano', precio: 70 },
+      { tamaño: 'Mini', precio: 45 }
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════════════
+// VARIABLES GLOBALES DEL CARRITO
+// ═══════════════════════════════════════════════════════════════
+let cartN = 0;
+let carritoItems = [];
+
+// ═══════════════════════════════════════════════════════════════
+// FUNCIONES DEL CARRITO
+// ═══════════════════════════════════════════════════════════════
+function addCart(nombre, tamaño, precio) {
+  const prodBase = productosBase.find(p => p.nombre === nombre);
+  
+  if (!prodBase) {
+    console.error('Producto no encontrado:', nombre);
+    return;
+  }
+
+  const nombreCompleto = `${nombre} (${tamaño})`;
+  const existente = carritoItems.find(item => item.nombre === nombreCompleto);
+  
+  if (existente) {
+    existente.cantidad++;
+  } else {
+    carritoItems.push({
+      nombre: nombreCompleto,
+      precio: precio,
+      imagen: prodBase.imagen,
+      cantidad: 1
+    });
+  }
+
+  // Actualizar contador
+  cartN = carritoItems.reduce((total, item) => total + item.cantidad, 0);
+  document.getElementById('cN').textContent = cartN;
+
+  // Dibujar carrito y mostrar notificación
+  dibujarCarrito();
+  toast(`✅ ${nombreCompleto} agregado al carrito!`);
+}
+
+function dibujarCarrito() {
+  const lista = document.getElementById('cartItems');
+  const seccionTotal = document.getElementById('cartTotal');
+
+  if (carritoItems.length === 0) {
+    lista.innerHTML = `<div class="empty-cart">
+      <span>🛒</span>
+      Tu carrito está vacío
+    </div>`;
+    seccionTotal.style.display = 'none';
+    return;
+  }
+
+  lista.innerHTML = '';
+  let subtotal = 0;
+
+  carritoItems.forEach((prod, index) => {
+    const totalProd = prod.precio * prod.cantidad;
+    subtotal += totalProd;
+
+    lista.innerHTML += `
+      <div class="cart-item">
+        <div class="ci-img">${prod.imagen}</div>
+        <div class="ci-info">
+          <div class="ci-name">${prod.nombre}</div>
+          <div class="ci-price">$${prod.precio} MXN</div>
+          <div class="ci-controls">
+            <button class="ci-btn" onclick="cambiarCantidad(${index}, -1)">−</button>
+            <span class="ci-qty">${prod.cantidad}</span>
+            <button class="ci-btn" onclick="cambiarCantidad(${index}, 1)">+</button>
+            <button class="ci-remove" onclick="eliminarItem(${index})">✕</button>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  const envio = 80;
+  const total = subtotal + envio;
+
+  document.getElementById('subtotal').textContent = `$${subtotal}`;
+  document.getElementById('total').textContent = `$${total}`;
+  seccionTotal.style.display = 'block';
+}
+
+function cambiarCantidad(index, delta) {
+  const item = carritoItems[index];
+  if (!item) return;
+  
+  item.cantidad += delta;
+  
+  if (item.cantidad <= 0) {
+    eliminarItem(index);
+  } else {
+    cartN = carritoItems.reduce((total, i) => total + i.cantidad, 0);
+    document.getElementById('cN').textContent = cartN;
+    dibujarCarrito();
+  }
+}
+
+function eliminarItem(index) {
+  carritoItems.splice(index, 1);
+  cartN = carritoItems.reduce((total, i) => total + i.cantidad, 0);
+  document.getElementById('cN').textContent = cartN;
+  dibujarCarrito();
+  toast(`❌ Producto eliminado`);
+}
+
+function cerrarCarrito() {
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('cartOverlay').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PROCEDER AL PAGO (WHATSAPP)
+// ═══════════════════════════════════════════════════════════════
+function procederAlPago() {
+  if (carritoItems.length === 0) {
+    toast('❌ Tu carrito está vacío');
+    return;
+  }
+
+  let mensaje = '🛒 *NUEVO PEDIDO CHIMELADA* 🌶️\n\n';
+  mensaje += '*Productos:*\n';
+
+  let subtotal = 0;
+  carritoItems.forEach(prod => {
+    const total_prod = prod.precio * prod.cantidad;
+    subtotal += total_prod;
+    mensaje += `• ${prod.nombre} x${prod.cantidad} = $${total_prod} MXN\n`;
+  });
+
+  const envio = 80;
+  const total = subtotal + envio;
+
+  mensaje += `\n*Subtotal:* $${subtotal} MXN\n`;
+  mensaje += `*Envío:* $${envio} MXN\n`;
+  mensaje += `*TOTAL:* $${total} MXN\n`;
+  mensaje += `\n📞 Confirmar disponibilidad y detalles de envío.`;
+
+  const numero = '529611029046'; // Tu número de Chimelada
+  const urlWhatsApp = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+
+  window.open(urlWhatsApp, '_blank');
+
+  setTimeout(() => {
+    carritoItems = [];
+    cartN = 0;
+    document.getElementById('cN').textContent = '0';
+    dibujarCarrito();
+    cerrarCarrito();
+    toast('✅ Pedido enviado a WhatsApp');
+  }, 1000);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDERIZAR PRODUCTOS
+// ═══════════════════════════════════════════════════════════════
+function renderProductos() {
+  const grid = document.getElementById('prodGrid');
+  
+  grid.innerHTML = productosBase.map(prod => `
+    <div class="card reveal">
+      <div class="card-img" style="background: linear-gradient(135deg, rgba(193,56,10,0.3), rgba(229,106,32,0.3));">
+        <div style="font-size: 5rem;">${prod.imagen}</div>
+      </div>
+      <div class="card-body">
+        <h3>"${prod.nombre}"</h3>
+        <p class="card-desc">Mermelada artesanal con ingredientes 100% naturales</p>
+        <div class="card-sizes">
+          ${prod.precios.map(p => `
+            <div class="size-option">
+              <span class="price">$${p.precio}</span>
+              <button class="add" onclick="addCart('${prod.nombre}', '${p.tamaño}', ${p.precio})">+ Agregar</button>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Animar con reveal
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), i * 100);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// OTRAS FUNCIONES
+// ═══════════════════════════════════════════════════════════════
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function openModal() {
+  document.getElementById('loginModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('loginModal').classList.remove('open');
+}
+
+document.getElementById('loginModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+
+function swTab(id, el) {
+  document.querySelectorAll('.m-tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('tab-log').style.display = id === 'log' ? 'block' : 'none';
+  document.getElementById('tab-reg').style.display = id === 'reg' ? 'block' : 'none';
+}
+
+function fakeLogin() {
+  closeModal();
+  toast('¡Sesión iniciada! Bienvenido 🌶');
+}
+
+function toggleMob() {
+  document.getElementById('mobNav').classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CURSOR PERSONALIZADO
+// ═══════════════════════════════════════════════════════════════
+
+const cur = document.getElementById('cur');
+const ring = document.getElementById('ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX;
+  my = e.clientY;
+  cur.style.left = (mx - 6) + 'px';
+  cur.style.top = (my - 6) + 'px';
+});
+
+(function loop() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = (rx - 18) + 'px';
+  ring.style.top = (ry - 18) + 'px';
+  requestAnimationFrame(loop);
+})();
+
+// ═══════════════════════════════════════════════════════════════
+// NAV SOLID
+// ═══════════════════════════════════════════════════════════════
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('solid', scrollY > 80);
+});
+
+// ═══════════════════════════════════════════════════════════════
+// SCROLL REVEAL
+// ═══════════════════════════════════════════════════════════════
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 100);
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// ═══════════════════════════════════════════════════════════════
+// ABRIR/CERRAR CARRITO DRAWER
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('cartBtn').addEventListener('click', () => {
+  document.getElementById('cartDrawer').classList.add('open');
+  document.getElementById('cartOverlay').classList.add('open');
+  dibujarCarrito();
+});
+
+// ═══════════════════════════════════════════════════════════════
+// INICIALIZAR PÁGINA
+// ═══════════════════════════════════════════════════════════════
+renderProductos();
+ 
+/* TOAST */
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
+
+/* MODAL */
+function openModal(){document.getElementById('loginModal').classList.add('open')}
+function closeModal(){document.getElementById('loginModal').classList.remove('open')}
+document.getElementById('loginModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+function swTab(id,el){
+  document.querySelectorAll('.m-tab').forEach(t=>t.classList.remove('on'));el.classList.add('on');
+  document.getElementById('tab-log').style.display=id==='log'?'block':'none';
+  document.getElementById('tab-reg').style.display=id==='reg'?'block':'none';
+}
+function fakeLogin(){closeModal();toast('¡Sesión iniciada! Bienvenido 🌶')}
+
+/* MOBILE NAV */
+function toggleMob(){document.getElementById('mobNav').classList.toggle('open')}
+
+/* SCROLL REVEAL */
+constio=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*100);io.unobserve(e.target)}});
+},{threshold:.08});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>io.observe(el));
+
+/* NAV SOLID */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('solid',scrollY>80));
+
+/* PRODUCT FILTER */
+function filterP(s,btn){
+  document.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  document.querySelectorAll('.card').forEach(c=>{c.style.display=(s==='all'||c.dataset.s===s)?'':'none'});
+}
+
+/* MARQUEE BUILD */
+const mItems=['MERMELADA ARTESANAL CON CHILES MEXICANOS COMO:','SABOR: MAGO PIÑA Y HABANERO 🌶️','SABOR: TAMRINDO CHIPOTLE 🔥','SABOR: TAMRINDO CAFE ☕','SABOR: CHILE MORRON JALAPEÑO 🫑','SABOR: CACAO 🍫','SALSA MACHA 🍯','PAQUETE 4 SABORES 🎁','ENVIOS A TODA LA REPUBLICA MEXICANA','SIN CON SERVADORES NI COLORANTES ARTIFICIALES','📍 HECHO EN BERRIOZABAL CHIAPAS'];
+const track=document.getElementById('mtrack');
+[...mItems,...mItems].forEach(t=>{
+  const d=document.createElement('div');d.className='marquee-item';
+  d.innerHTML=`${t}<span class="marquee-sep"></span>`;track.appendChild(d);
+});
+
+/* PARALLAX */
+window.addEventListener('scroll',()=>{
+  const bg=document.getElementById('parBg');
+  if(!bg)return;
+  const sec=document.getElementById('par');
+  const rect=sec.getBoundingClientRect();
+  const p=rect.top/(window.innerHeight+rect.height);
+  bg.style.transform=`translateY(${p*60}px)`;
+});
+
+/* COUNTER ANIMATION */
+const cObs=new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting){
+    document.querySelectorAll('[data-n]').forEach(el=>{
+      const n=parseFloat(el.dataset.n),sfx=el.dataset.sfx||'',dec=n%1!==0;
+      let s=0;const dur=1800;
+      const go=ts=>{if(!s)s=ts;const p=Math.min((ts-s)/dur,1),e=1-Math.pow(1-p,3);
+        el.textContent=(dec?(e*n).toFixed(1):Math.round(e*n))+sfx;
+        if(p<1)requestAnimationFrame(go);};
+      requestAnimationFrame(go);
+    });
+    cObs.disconnect();
+  }
+},{threshold:.5});
+const sb=document.querySelector('.stats-band');if(sb)cObs.observe(sb);
+
+// ═══ PROCEDER AL PAGO ═══
+function procederAlPago() {
+    // Si el carrito está vacío
+    if (carritoItems.length === 0) {
+        toast('❌ Tu carrito está vacío');
+        return;
+    }
+
+    // Armamos el mensaje para WhatsApp
+    let mensaje = '🛒 *NUEVO PEDIDO CHIMELADA* 🌶️\n\n';
+    mensaje += '*Productos:*\n';
+
+    let subtotal = 0;
+    carritoItems.forEach(prod => {
+        const total_prod = prod.precio * prod.cantidad;
+        subtotal += total_prod;
+        mensaje += `• ${prod.nombre} x${prod.cantidad} = $${total_prod} MXN\n`;
+    });
+
+    const envio = 80;
+    const total = subtotal + envio;
+
+    mensaje += `\n*Subtotal:* $${subtotal} MXN\n`;
+    mensaje += `*Envío:* $${envio} MXN\n`;
+    mensaje += `*TOTAL:* $${total} MXN\n`;
+    mensaje += `\n📞 Confirmar disponibilidad y detalles de envío.`;
+
+    // Número de WhatsApp (sin el +, sin espacios)
+    const numero = '529611029046'; // Tu número de Chimelada
+
+    // Armamos el link de WhatsApp
+    const urlWhatsApp = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+
+    // Abrimos WhatsApp
+    window.open(urlWhatsApp, '_blank');
+
+    // Vaciamos el carrito después de enviar
+    setTimeout(() => {
+        carritoItems = [];
+        cartN = 0;
+        document.getElementById('cN').textContent = '0';
+        dibujarCarrito();
+        document.getElementById('cartDrawer').classList.remove('open');
+        document.getElementById('cartOverlay').classList.remove('open');
+        toast('✅ Pedido enviado a WhatsApp');
+    }, 1000);
+}
+</script>
+</body>
+</html>
